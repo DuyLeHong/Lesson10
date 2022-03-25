@@ -1,42 +1,11 @@
-package com.example.lesson10;
+package com.example.lesson10
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class Album {
-    @SerializedName("id")
-    private int id;
-    @SerializedName("title")
-    private String title;
-    @SerializedName("url")
-    private String url;
-
-    public Album(int id, String title, String url) {
-        this.id = id;
-        this.title = title;
-        this.url = url;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-}
+class Album(
+    @field:SerializedName("id") var id: Int,
+    @field:SerializedName("title") var title: String,
+    @field:SerializedName(
+        "url"
+    ) var url: String
+)
