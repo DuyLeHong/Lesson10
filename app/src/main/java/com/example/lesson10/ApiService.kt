@@ -1,29 +1,27 @@
-package com.example.lesson10;
+package com.example.lesson10
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import retrofit2.http.GET
+import com.example.lesson10.Album
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.example.lesson10.ApiService
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-import java.util.List;
+interface ApiService {
+    @get:GET("/photos")
+    val allAlbums: Call<MutableList<Album>>
 
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-
-public interface ApiService {
-
-    // Link API: https://jsonplaceholder.typicode.com/photos
-
-    Gson gson = new GsonBuilder()
+    companion object {
+        // Link API: https://jsonplaceholder.typicode.com/photos
+        val gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
-            .create();
-
-    ApiService apiService = new Retrofit.Builder()
+            .create()
+        val apiService = Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-            .create(ApiService.class);
-
-    @GET("/photos")
-    Call<List<Album>> getAllAlbums();
+            .create(ApiService::class.java)
+    }
 }

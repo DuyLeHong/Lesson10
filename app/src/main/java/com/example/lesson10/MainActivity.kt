@@ -23,7 +23,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Callback<MutableList<Album>> {
     private var recyclerView: RecyclerView? = null
     private var adapter: AlbumListAdapter? = null
     private var albumList: MutableList<Album>? = null
@@ -44,25 +44,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun callApi() {
-        ApiService.apiService.allAlbums.enqueue(object : Callback<MutableList<Album>?> {
-            override fun onResponse(
-                call: Call<MutableList<Album>?>,
-                response: Response<MutableList<Album>?>
-            ) {
-                albumList = response.body()
-                if (albumList != null) {
-                    adapter!!.setData(albumList)
-                    displayToast("Call Api Successfully")
-                }
-            }
+//        ApiService.apiService?.allAlbums?.enqueue(obj : Callback<List<Album>!> {
+//            override fun onResponse(
+//                call: Call<MutableList<Album>?>,
+//                response: Response<MutableList<Album>?>
+//            ) {
+//                albumList = response.body()
+//                if (albumList != null) {
+//                    adapter!!.setData(albumList)
+//                    displayToast("Call Api Successfully")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<MutableList<Album>?>, t: Throwable) {
+//                displayToast("Call Api Fail")
+//            }
+//        })
 
-            override fun onFailure(call: Call<MutableList<Album>?>, t: Throwable) {
-                displayToast("Call Api Fail")
-            }
-        })
+        ApiService.apiService.allAlbums.enqueue(this)
 
 //        AsyncTaskExample asyncTask = new AsyncTaskExample();
 //        asyncTask.execute("https://jsonplaceholder.typicode.com/photos");
+    }
+
+    override fun onResponse(call: Call<MutableList<Album>>, response: Response<MutableList<Album>>) {
+        albumList = response.body()
+        if (albumList != null) {
+            adapter!!.setData(albumList)
+            displayToast("Call Api Successfully")
+        }
+    }
+
+    override fun onFailure(call: Call<MutableList<Album>>, t: Throwable) {
+        displayToast("Call Api Fail")
     }
 
     var p: ProgressDialog? = null
@@ -167,4 +181,6 @@ class MainActivity : AppCompatActivity() {
     private fun displayToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
+
+
 }
